@@ -12,11 +12,11 @@ export default function Upload (files,path) {
             autorename: true
         })
             .then(function (response) {
-                alert("File Has been uploaded á la success");
+                alert("Your File Has been uploaded! á la success");
                 return null;
             })
             .catch(function(error) {
-                console.error("Bananana");
+                console.error("ooo nooooo,its a error!");
             });
     }
     return null;

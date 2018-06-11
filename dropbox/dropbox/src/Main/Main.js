@@ -5,13 +5,15 @@ import Download from "../Download/Download";
 import Upload from "../Upload/Upload";
 
 export default class Main extends React.Component {
+    //state som innehåller files,path,starred och previusPath
     state = {
         files: [],
-        path: '',
+        path:'',
         starred: [],
         previousPath: []
     };
 
+    //
     componentWillMount() {
         this.loadPath(this.state.path)
     }
@@ -22,6 +24,11 @@ export default class Main extends React.Component {
         let idExistsInFiles = false;
         let idExistsInFilesIndex = "";
         let idExistsInStarred = false;
+
+
+
+
+        //går genom files i state och kollar om id stämmer, om ja sätter Idexist to true och spara indexet
         this.state.files.map((element, indexOf) => {
             if (element.id === value) {
                 idExistsInFiles = true;
@@ -35,14 +42,16 @@ export default class Main extends React.Component {
             }
         })
 
+        //om id finns inte i starred men finns i files då ska man pusha den till starredarray
         if (idExistsInStarred === false && idExistsInFiles === true) {
             starredArray.push(this.state.files[idExistsInFilesIndex]);
             this.setState({
                 starred: starredArray
-
             })
         }
+
     }
+
 
     checkIfItemIsStarred = (id) => {
         let starredArray = this.state.starred;
@@ -75,8 +84,8 @@ export default class Main extends React.Component {
         this.setState({
             starred: removeFromArray
         })
-        console.log(this.state.starred);
     }
+
 
     starredList = () => {
         this.setState({
@@ -105,7 +114,7 @@ export default class Main extends React.Component {
                         tempresult['path_display'] = obj.path_display;
                         tempresult['path_lower'] = obj.path_lower;
                         tempresult['size'] = obj.size;
-                        tempresult['server_modified'] = obj.lastmod;
+                        tempresult['server_modified'] = obj.server_modified;
                         tempresult['client_modified'] = obj.client_modified;
                         return tempresult;
                     });
@@ -118,6 +127,7 @@ export default class Main extends React.Component {
                 })
         }
         ;
+        console.log(this.state);
     }
 
 
@@ -139,11 +149,15 @@ export default class Main extends React.Component {
     goToParent = () => {
         let newPathArray = this.state.path.split("/");
         newPathArray.splice(0, 1);
+        console.log('goparent test 1 '+newPathArray);
         newPathArray.splice(-1,1);
+        console.log('goparent test 2 '+newPathArray);
         newPathArray = "/" + newPathArray.join('/');
         this.changePath(newPathArray)
     }
 
+
+    //printar breadcrumps
     printBreadCrumbs = (path) => {
 
         let thisPath = path.toString();
@@ -164,6 +178,7 @@ export default class Main extends React.Component {
         return dataToPrint;
     }
 
+
    upLoadAndChangePath=(files,path)=> {
                     let successfulUpload = Upload(files,path)
 
@@ -178,98 +193,116 @@ export default class Main extends React.Component {
    }
 
 
-   signOut =()=>{
-       localStorage.removeItem('access_token');
-}
-
-        render()
-        {
-            return (
-                <div>
-                    <h1 id="firstmessage">Welcome to your PIX-BOX</h1>
-                    <button onClick={this.signOut} className="btn btn-lg">Sign Out</button>
-                    <div className="navigation">
-                        <p onClick={() => this.loadPath('')}><i className="fas fa-home text-info"></i></p>
-                        <p onClick={() => this.starredList()}><i className="fas fa-star text-warning"></i>Starred</p>
-                        <p onClick={() => this.goBack()}><i className="fas fa-arrow-circle-left"></i>Go back</p>
-                        <p onClick={() => this.goToParent()}><i className="fas fa-arrow-circle-left"></i>Go to daddy</p>
-
-                        <hr></hr>
-                        {this.printBreadCrumbs(this.state.path).map((obj) => {
-                            return <line><breadcrumb onClick={()=>this.changePath(obj[0])}>{obj[1]}</breadcrumb>/</line>
-                        })}
-
-
-                    </div>
-                    <table className="table">
-                        <thead className="thead-dark">
-                        <tr>
-                            <th scope="col">Filename</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">Timestamp</th>
-                            <th scope="col">Last modified</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {this.state.files.map(function (obj) {
-                                let icon = '';
-                                let star = '';
-                                if (obj[".tag"] === "folder") {
-                                    icon = "fas fa-folder";
-                                    if (this.checkIfItemIsStarred(obj.id)) {
-                                        star = "fas fa-star"
-                                    }
-                                    else {
-                                        star = "far fa-star"
-                                    }
-                                    return (
-                                        <tr key={obj.id}>
-                                            <td onClick={() => this.changePath(obj.path_lower)}
-                                                className={icon}>
-                                                {obj.name}</td>
-                                            <td>{obj.size}</td>
-                                            <td>{obj.lastmod}</td>
-                                            <td>{obj.client_modified}</td>
-                                            <td className={star} onClick={() => this.changeStar(obj.id)}></td>
-                                        </tr>
-                                    )
-                                }
-
-                                else if (obj[".tag"] === "file") {
-                                    icon = "fas fa-file";
-                                    if (this.checkIfItemIsStarred(obj.id)) {
-                                        star = "fas fa-star"
-                                    }
-                                    else {
-                                        star = "far fa-star"
-                                    }
-                                    return (
-                                        <tr key={obj.id}>
-                                            <td onClick={() => {
-                                                Download(obj[".tag"], obj.path_lower);
-                                            }}
-                                                className={icon}>
-                                                {obj.name}</td>
-                                            <td>{obj.size}</td>
-                                            <td>{obj.lastmod}</td>
-                                            <td>{obj.client_modified}</td>
-                                            <td className={star} onClick={() => this.changeStar(obj.id)}></td>
-                                        </tr>
-                                    )
-                                }
-                                ;
-                            }
-                            , this)}
-                        </tbody>
-                    </table>
-                    <form>
-                        <input type="file" id="upload" onChange={(e)=> this.upLoadAndChangePath(e.target.files,this.state.path)}></input>
-                    </form>
-                </div>
-            )
+    signOut =()=> {
+        localStorage.removeItem('access_token')
+        if(!localStorage.getItem('access_token')){
+            this.setState({
+                files: [],
+                path: '',
+                starred: [],
+                previousPath: []
+            })
+            window.location.href = "https://pixbox.netlify.com/"
         }
+    }
+
+
+        render() {
+            if (localStorage.getItem('access_token')) {
+                return (
+                    <div>
+                        <h1 className="firstm">Welcome to your PIX-BOX</h1>
+                        <button onClick={this.signOut} className="btn">Sign Out</button>
+                        <div className="navigation">
+                            <p onClick={() => this.changePath('')}><i className="fas fa-home  text-white" ></i></p>
+                            <p onClick={() => this.starredList()}><i className="fas fa-star text-warning"></i>Starred
+                            </p>
+                            <p onClick={() => this.goBack()}><i className="fas fa-arrow-circle-left  text-white"></i>Go back</p>
+                            <p onClick={() => this.goToParent()}><i className="fas fa-folder  text-white"></i>Go to parent folder
+                            </p>
+
+                            <hr></hr>
+                            {this.printBreadCrumbs(this.state.path).map((obj) => {
+                                return <line>
+                                    <breadcrumb onClick={() => this.changePath(obj[0])}>{obj[1]}</breadcrumb>
+                                    /</line>
+                            })}
+
+
+                        </div>
+                        <table className="table">
+                            <thead className="thead-dark">
+                            <tr>
+                                <th scope="col">Filename</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Last modified</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {this.state.files.map(function (obj) {
+                                    let icon = '';
+                                    let star = '';
+                                    if (obj[".tag"] === "folder") {
+                                        icon = "fas fa-folder";
+                                        if (this.checkIfItemIsStarred(obj.id)) {
+                                            star = "fas fa-star"
+                                        }
+                                        else {
+                                            star = "far fa-star"
+                                        }
+                                        return (
+                                            <tr key={obj.id}>
+                                                <td onClick={() => this.changePath(obj.path_lower)}
+                                                    className={icon}>
+                                                    {obj.name}</td>
+                                                <td>{obj.size}</td>
+                                                <td>{obj.client_modified}</td>
+                                                <td>{obj.server_modified}</td>
+                                                <td className={star} onClick={() => this.changeStar(obj.id)}></td>
+                                            </tr>
+                                        )
+                                    }
+
+                                    else if (obj[".tag"] === "file") {
+                                        icon = "fas fa-file";
+                                        if (this.checkIfItemIsStarred(obj.id)) {
+                                            star = "fas fa-star"
+                                        }
+                                        else {
+                                            star = "far fa-star"
+                                        }
+                                        return (
+                                            <tr key={obj.id}>
+                                                <td onClick={() => {
+                                                    Download(obj[".tag"], obj.path_lower);
+                                                }}
+                                                    className={icon}>
+                                                    {obj.name}</td>
+                                                <td>{obj.size}</td>
+                                                <td>{obj.client_modified}</td>
+                                                <td>{obj.server_modified}</td>
+                                                <td className={star} onClick={() => this.changeStar(obj.id)}></td>
+                                            </tr>
+                                        )
+                                    }
+                                    ;
+                                }
+                                , this)}
+                            </tbody>
+                        </table>
+                        <form>
+                            <input type="file" id="upload"
+                                   onChange={(e) => this.upLoadAndChangePath(e.target.files, this.state.path)}></input>
+                        </form>
+                    </div>
+                )
+            }
+            else return null;
+        }
+
     }
 
 

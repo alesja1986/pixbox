@@ -1,44 +1,61 @@
+body{
+    background-color: lightseagreen;
+    background: linear-gradient(darkcyan, lightgoldenrodyellow);
+    font-family: 'Alegreya SC', serif;
+}
+
+#login {
+    width: 400px;
+    display: flex;
+    flex-flow: column;
+    margin: auto;
+    margin-top: 5em;
+}
+    h3,h1{ color: white;
+    }
+
+#login .fas{
+    color:darkblue;
+    font-size: 25px;
+    padding-right: 30px;
+}
+
+.App .button {
+    color:saddlebrown;
+    text-decoration: none;
+    padding:0.4em;
+    border:gray 1px solid;
+    background-color: cornsilk;
+    box-shadow: 2px 3px #888888;
+    cursor: pointer;
+    width: 290px;
+    font-size: 25px;
+}
+
 
 .App {
     margin: 16px;
-    min-height: 400px;
+    min-height: 1000px;
+    height: auto;
   }
 
 
-.App fas{
-    color: orange;
+.App .fas{
     cursor: pointer;
-}
-
-.App far{
-    color: darkblue;
-    cursor: pointer;
+    margin-left: 1em;
+    margin-right: 0.1em;
 }
 
 .App .navigation{
-    color:darkblue;
-    font-size: 15px;
+    color:white;
+    font-size: 20px;
     display: flex;
+    margin-top: 1em;
 }
 
 .
-#firstmessage{
-    color:darkblue;
-    margin-left: auto ;
-    margin-right: auto ;
-   width: 600px;
-    text-shadow: 0 0 3px gray;
-}
 
 #firstmessage:first-letter {
     font-size: 150%;
 }
-  .App .button {
-       color:saddlebrown;
-      text-decoration: none;
-      padding:1em;
-      border:gray 1px solid;
-      background-color: cornsilk;
-      box-shadow: 2px 3px #888888;
-      cursor: pointer;
-  }
+

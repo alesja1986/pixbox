@@ -9,16 +9,18 @@ import Upload from './Upload/Upload';
 
 class App extends Component {
 
-//render är en metod
-  render() {
-    return (
-      <div className="App">
-        <Auth/>
-        <Main/>
-        <Download/>
-       <Upload/>
-      </div>
-    );
-  }
+    render() {
+
+                return (
+
+                    <div className="App">
+                        <Auth/>
+                         <Main/>
+                         <Download/>
+                          <Upload/>
+                </div>)
+            }
+
+
 }
 export default App;

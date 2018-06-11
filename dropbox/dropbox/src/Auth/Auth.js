@@ -12,7 +12,7 @@ export default class Auth extends React.Component {
         files:''
     };
 
-    //component ska ha Class
+    //component ska ha Class!!!
     componentWillMount() {
 
         //Parses the url and gets the access token if it is in the urls hash
@@ -39,15 +39,14 @@ export default class Auth extends React.Component {
             })
         }
 
-        //om inte man har ingen token i localstorage och url då anvisas man till dropbox inloggnings sidan.
+        //om man har ingen token i localstorage och url då anvisas man till dropbox inloggnings sidan.
         else {
             const dbx = new Dropbox({ clientId: this.CLIENT_ID});
             this.setState({
-            authUrl: dbx.getAuthenticationUrl('https://pix-box.netlify.com')
+            authUrl: dbx.getAuthenticationUrl("https://pixbox.netlify.com/")
             })
         }
     }
-
 
      //class ska alltid ha render när man använder return!
     render() {
@@ -56,11 +55,13 @@ export default class Auth extends React.Component {
         return (
             null
         );}
-        //annars laddas login-knappcd
+
+        //annars laddas login-knapped
         if(!this.state.token){
             return (
-                <div>
-                    <a href={this.state.authUrl} id="authlink" className="button"> Logga in på din Pix-Box</a>
+                <div id="login">
+                    <h3>WELCOME TO PIX-BOX</h3>
+                    <a href={this.state.authUrl} id="authlink" className="button">   <i class="fas fa-users"></i>  Login</a>
                 </div>
             );}
     }
