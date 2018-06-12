@@ -43,7 +43,7 @@ export default class Auth extends React.Component {
         else {
             const dbx = new Dropbox({ clientId: this.CLIENT_ID});
             this.setState({
-            authUrl: dbx.getAuthenticationUrl("https://pixbox.netlify.com/")
+            authUrl: dbx.getAuthenticationUrl("http://localhost:3000")
             })
         }
     }

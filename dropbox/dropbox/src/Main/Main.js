@@ -149,7 +149,7 @@ export default class Main extends React.Component {
     goToParent = () => {
         let newPathArray = this.state.path.split("/");
         newPathArray.splice(0, 1);
-        console.log('goparent test 1 '+newPathArray);
+        console.log('goparent test 1'+newPathArray);
         newPathArray.splice(-1,1);
         console.log('goparent test 2 '+newPathArray);
         newPathArray = "/" + newPathArray.join('/');
@@ -202,7 +202,7 @@ export default class Main extends React.Component {
                 starred: [],
                 previousPath: []
             })
-            window.location.href = "https://pixbox.netlify.com/"
+            window.location.href = "http://localhost:3000"
         }
     }
 
