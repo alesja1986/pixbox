@@ -184,7 +184,7 @@ export default class Main extends React.Component {
         starred: [],
         previousPath: []
       });
-      window.location.href = "https://pixbox.netlify.com/";
+      window.location.href = "https://pixbox.netlify.com";
     }
   };
 
