@@ -178,6 +178,7 @@ export default class Main extends React.Component {
   signOut = () => {
     localStorage.removeItem("access_token");
     if (!localStorage.getItem("access_token")) {
+      console.log("hellllloooooo");
       this.setState({
         files: [],
         path: "",
